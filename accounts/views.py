@@ -13,7 +13,7 @@ from .tokens import account_activation_token
 
 def register(request):
     if request.user.is_authenticated:
-        return redirect('home') 
+        return redirect('dashboard') 
 
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
@@ -60,7 +60,7 @@ def activate_account(request, uidb64, token):
 
 def login(request):
     if request.user.is_authenticated:
-        return redirect('home') 
+        return redirect('dashboard') 
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -84,7 +84,7 @@ def logout(request):
 
 def forgot_password(request):
     if request.user.is_authenticated:
-        return redirect('home')
+        return redirect('dashboard')
     if request.method == 'POST':
         form = PasswordResetRequestForm(request.POST)
         if form.is_valid():
