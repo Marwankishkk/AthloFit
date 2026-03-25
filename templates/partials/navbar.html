@@ -1,0 +1,20 @@
+{% load static %}
+<header class="sticky top-0 z-50 w-full border-b border-zinc-800/80 bg-zinc-950/90 backdrop-blur-md">
+    <nav class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8" aria-label="Main navigation">
+        <a href="{% url 'home' %}" class="flex items-center gap-2 shrink-0">
+            <span class="text-xl font-bold tracking-tight text-white sm:text-2xl">Athlo<span class="text-accent-cyan">Fit</span></span>
+        </a>
+        <div class="flex items-center gap-2 sm:gap-4">
+            
+            <!-- Auth Buttons -->
+            <div class="flex items-center gap-2">
+                {% if request.user.is_authenticated %}
+                    <a href="{% url 'logout' %}" class="hidden rounded-lg border border-zinc-600 px-3 py-2 text-sm font-medium text-zinc-300 transition-colors hover:border-zinc-500 hover:bg-zinc-800/50 hover:text-white sm:inline-flex">Logout</a>
+                {% else %}
+                <a href="{% url 'login' %}" class="hidden rounded-lg border border-zinc-600 px-3 py-2 text-sm font-medium text-zinc-300 transition-colors hover:border-zinc-500 hover:bg-zinc-800/50 hover:text-white sm:inline-flex">Login</a>
+                <a href="{% url 'register' %}" class="inline-flex items-center justify-center rounded-lg bg-accent-cyan px-3 py-2 text-sm font-semibold text-zinc-950 transition-colors hover:bg-cyan-400 focus:outline-none focus:ring-2 focus:ring-accent-cyan focus:ring-offset-2 focus:ring-offset-zinc-950 sm:px-4">Join</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+</header>

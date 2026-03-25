@@ -1,0 +1,14 @@
+{% load static %}
+<footer class="border-t border-zinc-800 bg-zinc-900/50">
+    <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+        <div class="flex flex-col items-center justify-between gap-6 sm:flex-row">
+            <a href="{% url 'home' %}" class="text-lg font-bold text-white">Athlo<span class="text-accent-cyan">Fit</span></a>
+            <p class="text-center text-sm text-zinc-500 sm:text-left">For online coaches. Scale your business, one dashboard.</p>
+            <div class="flex gap-6 text-sm text-zinc-500">
+                <a href="#privacy" class="hover:text-accent-cyan transition-colors">Privacy</a>
+                <a href="#terms" class="hover:text-accent-cyan transition-colors">Terms</a>
+            </div>
+        </div>
+        <p class="mt-6 text-center text-xs text-zinc-600">© {% now "Y" %} AthloFit. All rights reserved.</p>
+    </div>
+</footer>

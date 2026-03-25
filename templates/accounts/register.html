@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Join AthloFit – Register{% endblock %}
+
+{% block navbar %}
+    {% include "partials/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+    <div class="mx-auto max-w-md px-4 py-12 sm:py-16 lg:py-20">
+        <div class="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6 shadow-xl sm:p-8">
+            <h1 class="text-2xl font-bold tracking-tight text-white sm:text-3xl">Create your account</h1>
+            <p class="mt-2 text-sm text-zinc-400">Join AthloFit and run your coaching business in one place.</p>
+
+            {% if form.non_field_errors %}
+                <div class="mt-4 rounded-lg border border-red-500/30 bg-red-500/10 p-3 text-sm text-red-400">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <form method="post" action="{% url 'register' %}" class="mt-6 space-y-5">
+                {% csrf_token %}
+
+                {% for field in form %}
+                    <div>
+                        <label for="{{ field.id_for_label }}" class="block text-sm font-medium text-zinc-300">
+                            {{ field.label }}
+                        </label>
+                        <input type="{% if field.name == 'password' or field.name == 'confirm_password' %}password{% else %}{% if field.name == 'email' %}email{% else %}text{% endif %}{% endif %}"
+                               name="{{ field.name }}"
+                               id="{{ field.id_for_label }}"
+                               value="{{ field.value|default:'' }}"
+                               autocomplete="{% if field.name == 'confirm_password' %}new-password{% elif field.name == 'password' %}new-password{% elif field.name == 'email' %}email{% else %}given-name{% endif %}"
+                               class="mt-1.5 block w-full rounded-lg border border-zinc-600 bg-zinc-800/50 px-4 py-3 text-white placeholder-zinc-500 focus:border-accent-cyan focus:outline-none focus:ring-1 focus:ring-accent-cyan sm:text-sm"
+                               placeholder="{{ field.label }}"
+                               {% if field.field.required %}required{% endif %}>
+                        {% if field.errors %}
+                            <p class="mt-1 text-sm text-red-400">{{ field.errors.0 }}</p>
+                        {% endif %}
+                        {% if field.help_text and field.name != 'confirm_password' %}
+                            <p class="mt-1 text-xs text-zinc-500">{{ field.help_text }}</p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <button type="submit" class="w-full rounded-xl bg-accent-cyan py-3.5 text-base font-semibold text-zinc-950 shadow-lg shadow-accent-cyan/20 transition hover:bg-cyan-400 focus:outline-none focus:ring-2 focus:ring-accent-cyan focus:ring-offset-2 focus:ring-offset-zinc-900">
+                    Join AthloFit
+                </button>
+            </form>
+
+            <p class="mt-6 text-center text-sm text-zinc-400">
+                Already have an account?
+                <a href="{% url 'login' %}" class="font-medium text-accent-cyan hover:underline">Log in</a>
+            </p>
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer %}
+    {% include "partials/footer.html" %}
+{% endblock %}

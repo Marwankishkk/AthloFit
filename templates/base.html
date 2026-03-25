@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="{{ lang_code|default:'en' }}" dir="{{ dir|default:'ltr' }}" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AthloFit – Your entire coaching business in one dashboard. For Egyptian online coaches.">
+    <title>{% block title %}AthloFit – Coaching Business Dashboard{% endblock %}</title>
+    <!-- Inter from Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Tailwind Play CDN with custom theme -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        zinc: {
+                            950: '#09090b',
+                            900: '#18181b',
+                            800: '#27272a',
+                            700: '#3f3f46',
+                        },
+                        accent: {
+                            cyan: '#06b6d4',
+                            lime: '#84cc16',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-zinc-950 text-zinc-100 font-sans antialiased min-h-screen" dir="{{ dir|default:'ltr' }}">
+    {% block navbar %}{% endblock %}
+    <main role="main">
+        {% block content %}{% endblock %}
+    </main>
+    {% block footer %}{% endblock %}
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
