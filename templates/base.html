@@ -44,6 +44,15 @@
 <body class="bg-zinc-950 text-zinc-100 font-sans antialiased min-h-screen" dir="{{ dir|default:'ltr' }}">
     {% block navbar %}{% endblock %}
     <main role="main">
+        {% if messages %}
+            <div class="mx-auto max-w-6xl px-4 pt-4 sm:px-6 lg:px-8">
+                {% for message in messages %}
+                    <div class="mb-2 rounded-lg border px-4 py-3 text-sm {% if message.tags == 'success' %}border-emerald-500/30 bg-emerald-500/10 text-emerald-200{% elif message.tags == 'error' %}border-red-500/30 bg-red-500/10 text-red-400{% else %}border-zinc-600 bg-zinc-900/80 text-zinc-300{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
         {% block content %}{% endblock %}
     </main>
     {% block footer %}{% endblock %}

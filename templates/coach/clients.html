@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}My clients – AthloFit{% endblock %}
+
+{% block navbar %}
+    {% include "partials/navbar.html" %}
+{% endblock %}
+
+{% block content %}
+    <div class="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-14">
+        <div class="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+                <p class="text-sm font-medium text-accent-cyan">Clients</p>
+                <h1 class="mt-1 text-3xl font-bold tracking-tight text-white sm:text-4xl">My clients</h1>
+                <p class="mt-2 max-w-xl text-sm text-zinc-400">
+                    Everyone listed here is assigned to you. Other coaches cannot see them.
+                </p>
+            </div>
+            <div class="flex flex-wrap items-center gap-2">
+                <a href="{% url 'dashboard' %}" class="inline-flex items-center justify-center rounded-lg border border-zinc-600 px-4 py-2.5 text-sm font-medium text-zinc-300 transition hover:border-zinc-500 hover:bg-zinc-800/50 hover:text-white">
+                    Dashboard
+                </a>
+                <a href="{% url 'add_client' %}" class="inline-flex items-center justify-center rounded-lg bg-accent-cyan px-4 py-2.5 text-sm font-semibold text-zinc-950 transition hover:bg-cyan-400">
+                    Add client
+                </a>
+            </div>
+        </div>
+
+        {% if not clients %}
+            <div class="rounded-2xl border border-dashed border-zinc-700 bg-zinc-900/30 px-6 py-16 text-center">
+                <p class="text-lg font-medium text-white">No clients yet</p>
+                <p class="mt-2 text-sm text-zinc-400">Add your first client to see them in this list.</p>
+                <a href="{% url 'add_client' %}" class="mt-6 inline-flex items-center justify-center rounded-xl bg-accent-cyan px-5 py-3 text-sm font-semibold text-zinc-950 shadow-lg shadow-accent-cyan/20 transition hover:bg-cyan-400">
+                    Add client
+                </a>
+            </div>
+        {% else %}
+            <div class="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900/50 shadow-xl">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-zinc-800 text-left text-sm">
+                        <thead>
+                            <tr class="border-b border-zinc-800 bg-zinc-900/80">
+                                <th scope="col" class="px-4 py-3 font-semibold text-zinc-300 sm:px-6">Name</th>
+                                <th scope="col" class="hidden px-4 py-3 font-semibold text-zinc-300 sm:table-cell sm:px-6">Phone</th>
+                                <th scope="col" class="hidden px-4 py-3 font-semibold text-zinc-300 lg:table-cell lg:px-6">Program</th>
+                                <th scope="col" class="hidden px-4 py-3 font-semibold text-zinc-300 md:table-cell md:px-6">Goal</th>
+                                <th scope="col" class="hidden px-4 py-3 font-semibold text-zinc-300 xl:table-cell xl:px-6">Dates</th>
+                                <th scope="col" class="px-4 py-3 font-semibold text-zinc-300 sm:px-6">Status</th>
+                                <th scope="col" class="px-4 py-3 text-right font-semibold text-zinc-300 sm:px-6">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-zinc-800">
+                            {% for client in clients %}
+                                <tr class="transition hover:bg-zinc-800/40">
+                                    <td class="px-4 py-4 sm:px-6">
+                                        <a href="{% url 'client_detail' client.id %}" class="font-medium text-white hover:text-accent-cyan">{{ client.name }}</a>
+                                        {% if client.city %}
+                                            <p class="mt-0.5 text-xs text-zinc-500">{{ client.city }}</p>
+                                        {% endif %}
+                                        <p class="mt-1 text-xs text-zinc-500 sm:hidden">{{ client.phone_number }}</p>
+                                    </td>
+                                    <td class="hidden whitespace-nowrap px-4 py-4 text-zinc-400 sm:table-cell sm:px-6">{{ client.phone_number }}</td>
+                                    <td class="hidden max-w-[12rem] truncate px-4 py-4 text-zinc-400 lg:table-cell lg:px-6">{{ client.program_name }}</td>
+                                    <td class="hidden px-4 py-4 text-zinc-400 md:table-cell md:px-6">{{ client.get_goal_display }}</td>
+                                    <td class="hidden whitespace-nowrap px-4 py-4 text-xs text-zinc-500 xl:table-cell xl:px-6">
+                                        {{ client.program_start_date|date:"M j, Y" }} – {{ client.program_end_date|date:"M j, Y" }}
+                                    </td>
+                                    <td class="px-4 py-4 sm:px-6">
+                                        {% if client.is_active %}
+                                            <span class="inline-flex rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-0.5 text-xs font-medium text-emerald-400">Active</span>
+                                        {% else %}
+                                            <span class="inline-flex rounded-full border border-zinc-600 bg-zinc-800 px-2.5 py-0.5 text-xs font-medium text-zinc-400">Inactive</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="whitespace-nowrap px-4 py-4 text-right sm:px-6">
+                                        <a href="{% url 'edit_client' client.id %}" class="inline-flex items-center justify-center rounded-lg border border-zinc-600 px-3 py-1.5 text-xs font-semibold text-zinc-200 transition hover:border-accent-cyan/50 hover:bg-zinc-800/80 hover:text-white">
+                                            Edit
+                                        </a>
+                                        <a href="{% url 'delete_client' client.id %}" class="inline-flex items-center justify-center rounded-lg border border-red-500 px-3 py-1.5 text-xs font-semibold text-red-500 transition hover:border-red-400 hover:bg-red-500/10 hover:text-red-400">
+                                            Delete
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <p class="mt-6 text-center text-sm text-zinc-500">{{ clients|length }} client{{ clients|length|pluralize }} total</p>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block footer %}
+    {% include "partials/footer.html" %}
+{% endblock %}
