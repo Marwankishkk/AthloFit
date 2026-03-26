@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
+import uuid
+import uuid
 
 from .validators import validate_phone_number
 
@@ -13,7 +15,7 @@ class Client(models.Model):
     )
     
     # Basic Info
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255) 
     phone_number = models.CharField(
         max_length=20,
         validators=[validate_phone_number],
@@ -66,3 +68,43 @@ class Subscription(models.Model):
 
     def is_expired(self):
         return timezone.now().date() > self.end_date
+
+class ClientInvitation(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('submitted', 'Submitted'),
+        ('accepted', 'Accepted'),
+        ('rejected', 'Rejected'),
+    ]
+
+    GOAL_CHOICES = [
+        ('CUT', 'Fat Loss'),
+        ('BULK', 'Muscle Gain'),
+        ('MAINTAIN', 'Maintenance'),
+        ('ATHLETIC', 'Athletic Performance'),
+    ]
+
+    GENDER_CHOICES = [('M', 'Male'), ('F', 'Female')]
+
+    coach = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='invitations'
+    )
+    token = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
+
+    name = models.CharField(max_length=255, blank=True)
+    phone_number = models.CharField(max_length=20, blank=True)
+    city = models.CharField(max_length=100, blank=True)
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES, blank=True)
+    age = models.PositiveIntegerField(null=True, blank=True)
+    height = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    weight = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+    goal = models.CharField(max_length=20, choices=GOAL_CHOICES, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    submitted_at = models.DateTimeField(null=True, blank=True)
+
+    def __str__(self):
+        return f"Invite by {self.coach.username} — {self.status}"

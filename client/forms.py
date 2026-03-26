@@ -1,6 +1,7 @@
 from django import forms
 
 from .models import Client
+from .validators import validate_phone_number
 
 _INPUT = (
     'mt-1.5 block w-full rounded-lg border border-zinc-600 bg-zinc-800/50 '
@@ -38,3 +39,53 @@ class ClientForm(forms.ModelForm):
             'program_start_date': forms.DateInput(attrs={'type': 'date', 'class': _INPUT}),
             'program_end_date': forms.DateInput(attrs={'type': 'date', 'class': _INPUT}),
         }
+
+
+
+class ClientInvitationForm(forms.Form):
+    name = forms.CharField(
+        max_length=255,
+        label='Full Name',
+        widget=forms.TextInput(attrs={'class': _INPUT, 'autocomplete': 'name'}),
+    )
+    phone_number = forms.CharField(
+        max_length=20,
+        validators=[validate_phone_number],
+        label='Phone Number',
+        widget=forms.TextInput(attrs={'class': _INPUT, 'autocomplete': 'tel', 'inputmode': 'tel'}),
+    )
+    city = forms.CharField(
+        max_length=100,
+        required=False,
+        label='City',
+        widget=forms.TextInput(attrs={'class': _INPUT, 'autocomplete': 'address-level2'}),
+    )
+    gender = forms.ChoiceField(
+        choices=[('M', 'Male'), ('F', 'Female')],
+        label='Gender',
+        widget=forms.Select(attrs={'class': _INPUT}),
+    )
+    age = forms.IntegerField(
+        min_value=1,
+        max_value=120,
+        label='Age',
+        widget=forms.NumberInput(attrs={'class': _INPUT, 'min': 1}),
+    )
+    height = forms.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        label='Height (cm)',
+        widget=forms.NumberInput(attrs={'class': _INPUT, 'min': 0, 'step': '0.01'}),
+    )
+    weight = forms.DecimalField(
+        max_digits=5,
+        decimal_places=2,
+        label='Weight (kg)',
+        widget=forms.NumberInput(attrs={'class': _INPUT, 'min': 0, 'step': '0.01'}),
+    )
+    goal = forms.ChoiceField(choices=[
+        ('CUT', 'Fat Loss'),
+        ('BULK', 'Muscle Gain'),
+        ('MAINTAIN', 'Maintenance'),
+        ('ATHLETIC', 'Athletic Performance'),
+    ], label='Goal', widget=forms.Select(attrs={'class': _INPUT}))

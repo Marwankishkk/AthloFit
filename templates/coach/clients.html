@@ -24,6 +24,12 @@
                 <a href="{% url 'add_client' %}" class="inline-flex items-center justify-center rounded-lg bg-accent-cyan px-4 py-2.5 text-sm font-semibold text-zinc-950 transition hover:bg-cyan-400">
                     Add client
                 </a>
+                <a href="{% url 'generate_invitation' %}" class="inline-flex items-center justify-center rounded-lg border border-accent-cyan/30 bg-accent-cyan/10 px-4 py-2.5 text-sm font-semibold text-accent-cyan transition hover:border-accent-cyan/50 hover:bg-accent-cyan/15">
+                    Generate invite link
+                </a>
+                <a href="{% url 'pending_requests' %}" class="inline-flex items-center justify-center rounded-lg border border-zinc-600 px-4 py-2.5 text-sm font-medium text-zinc-300 transition hover:border-zinc-500 hover:bg-zinc-800/50 hover:text-white">
+                    Pending requests
+                </a>
             </div>
         </div>
 

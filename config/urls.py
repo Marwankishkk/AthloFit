@@ -22,4 +22,5 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('', include('accounts.urls')),
     path('', include('coach.urls')),
+    path('', include('client.urls')),
 ]
